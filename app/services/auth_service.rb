@@ -17,7 +17,7 @@ class AuthService
 
     def get_token(user_id)
         secret_string = File.read(Rails.configuration.secretlocation)
-        payload = { "user_id": user_id }.to_json
+        payload = { "user_id": user_id, "nonce": get_nonce() }.to_json
         signature = { "signature": Digest::SHA256.hexdigest(secret_string + payload) }.to_json
         Base64.encode64(payload) + "." + Base64.encode64(signature)
     end
@@ -29,9 +29,15 @@ class AuthService
             payload = Base64.decode64(token_parts[0])
             signature = JSON.parse(Base64.decode64(token_parts[1])).values[0]
             expected_signature = Digest::SHA256.hexdigest(secret_string + payload)
-            expected_signature = signature
+            expected_signature == signature
         rescue
           false
         end
+    end
+
+    private
+
+    def get_nonce()
+        rand(36**12).to_s(9)
     end
 end
