@@ -1,0 +1,19 @@
+<% provide(:title, "Sign up") %>
+<div class="row h-100 w-100">
+    <div class="col-sm-4 my-auto"></div>
+    <div class="col-sm-4 my-auto">
+        <p id="notice"><%= notice %></p>
+
+        <%= form_for(:user, url: '/users/create') do |f| %>
+
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control' %>
+
+        <%= f.label :password %>
+        <%= f.password_field :password, class: 'form-control' %>
+
+        <%= f.submit "Sign up", class: "btn btn-primary" %>
+        <% end %>
+    </div>
+    <div class="col-sm-4 my-auto"></div>
+</div>
